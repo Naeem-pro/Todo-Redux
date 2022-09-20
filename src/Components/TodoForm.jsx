@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 const TodoForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todoReducer);
-  console.log(todos);
 
   const handleSumit = (e) => {
     e.preventDefault();
+    if (!title || !description) {
+      alert("Please enter complete todo item");
+      return;
+    }
     const newTodo = {
-      id: Date.now(),
+      id: Date.now().toString(),
       title: title,
       description: description,
     };
@@ -20,11 +24,19 @@ const TodoForm = () => {
     });
   };
 
+  const handleDelete = (id) => {
+    dispatch({
+      //dispatch an action to delete todo from list
+      type: "DELETE_TODO",
+      payload: id,
+    });
+  };
+
   return (
     <div className="container">
       <form onSubmit={handleSumit}>
         <div className="row mb-3">
-          <label htmlFor="title" class="col-sm-2 col-form-label">
+          <label htmlFor="title" className="col-sm-2 col-form-label">
             Title
           </label>
           <div className="col-sm-10">
@@ -61,12 +73,28 @@ const TodoForm = () => {
           <li className="list-group-item bg-success">All Todos</li>
         )}
         {todos &&
-          todos.map((todo) => (
-            <li key={todo.id} className="list-group-item">
-              <span style={{ fontWeight: "bold" }}>{todo.title}</span>{" "}
-              {todo.description}
-            </li>
-          ))}
+          todos.map((todo) => {
+            return (
+              <li
+                key={todo.id}
+                className="list-group-item d-flex justify-content-between"
+              >
+                <div>{todo.title}</div>
+                <div>{todo.description}</div>
+                <div>
+                  <Link to={`edit/${todo.id}`} className="btn btn-warning me-2">
+                    Edit
+                  </Link>
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(todo.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </li>
+            );
+          })}
       </ul>
     </div>
   );

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import TodoForm from "./Components/TodoForm";
+import EditForm from "./Components/EditForm";
 
 function App() {
   let dispatch = useDispatch(); //dipatch hook is used to dispatch an action through ui
@@ -28,7 +30,10 @@ function App() {
       <button onClick={handleDeposit}>Deposit</button>
       <span>{counter}</span>
       <button onClick={handleWithdraw}>Withdraw</button> */}
-      <TodoForm />
+      <Routes>
+        <Route path="edit/:id" element={<EditForm />} />
+        <Route path="/" element={<TodoForm />} />
+      </Routes>
     </div>
   );
 }
