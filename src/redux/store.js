@@ -9,6 +9,9 @@ const rootReducer = combineReducers({
   todoReducer,
 });
 
-const store = createStore(rootReducer); //rootReducer is the combinatin of multiple reducers
+const store = createStore(
+  rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+); //rootReducer is the combinatin of multiple reducers
 
 export default store;
